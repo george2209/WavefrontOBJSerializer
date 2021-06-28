@@ -1,2 +1,0 @@
-C:\Users\George\source\repos\OBJToBinary\Debug\OBJToBinary.exe
-C:\Users\George\source\repos\OBJToBinary\Debug\OBJToBinary.pdb
