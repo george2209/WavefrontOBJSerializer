@@ -1,11 +1,11 @@
 #include "objparser.h"
 #include <stdio.h>
-#include "objstruct.h"
 #include <string.h>
 #include <iostream>
 #include "obj_vertex_element.h"
 #include "StringUtils.h"
 #include "ternary_search.h"
+#include "obj_container.h"
 #include "my_utils.h"
 
 namespace my_utils {
@@ -59,7 +59,7 @@ namespace my_utils {
         {
             if (iCurrentObjContainer != NULL)
             {
-                iCurrentObjContainer->persist(this->iOutputStream);
+                iCurrentObjContainer->persist(line, 2, this->iOutputStream); //todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
                 delete iCurrentObjContainer;
                 iCurrentObjContainer = NULL;
             }
@@ -94,7 +94,7 @@ namespace my_utils {
     /// </summary>
     void obj_parser::close()
     {
-        iCurrentObjContainer->persist(this->iOutputStream);
+        iCurrentObjContainer->persist(NULL, 0 , this->iOutputStream); //TODO..fix it!
         delete iCurrentObjContainer;
         iCurrentObjContainer = NULL;
     }
