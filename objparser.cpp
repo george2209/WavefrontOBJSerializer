@@ -59,12 +59,12 @@ namespace my_utils {
         {
             if (iCurrentObjContainer != NULL)
             {
-                iCurrentObjContainer->persist(line, 2, this->iOutputStream); //todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+                iCurrentObjContainer->persist(this->iOutputStream); //todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
                 delete iCurrentObjContainer;
                 iCurrentObjContainer = NULL;
             }
             else {
-                iCurrentObjContainer = new obj_container();
+                iCurrentObjContainer = new obj_container(line, 2);
             }
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY:
@@ -94,7 +94,7 @@ namespace my_utils {
     /// </summary>
     void obj_parser::close()
     {
-        iCurrentObjContainer->persist(NULL, 0 , this->iOutputStream); //TODO..fix it!
+        iCurrentObjContainer->persist(this->iOutputStream); //TODO..fix it!
         delete iCurrentObjContainer;
         iCurrentObjContainer = NULL;
     }
