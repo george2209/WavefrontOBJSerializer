@@ -4,3 +4,5 @@ You may want to use this file to directly load into the memory the OBJ object(s)
 
 Binary format:
 - see file "docs/OBJ to binary structure_20210611_V1.0.pptx"
+
+![alt text](https://github.com/george2209/WavefrontOBJSerializer/tree/main/docs/binary_format.png?raw=true)
