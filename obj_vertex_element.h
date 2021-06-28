@@ -6,7 +6,7 @@ namespace my_utils {
 	{
 	public:
 		obj_vertex_element();
-		bool parse(char* pLine, int startIndex);
+		bool parse(const char* pLine, int startIndex);
 	public:
 		float x;
 		float y;

@@ -2,19 +2,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "obj_vertex_element.h"
 #include "StringUtils.h"
 #include "ternary_search.h"
+#include "ternary_tag_node.h"
 #include "obj_container.h"
 #include "my_utils.h"
 
 namespace my_utils {
-    obj_parser::obj_parser(const std::ofstream * pOutputStream)
+    obj_parser::obj_parser(std::ofstream * pOutputStream)
 	{
         this->iTagSearchEngine = new ternary_search();
         iCurrentObjContainer = NULL;
         iOutputStream = pOutputStream;
-        lstVertices = new linkedlist<obj_vertex_element>();
 
         buildOBJTagsArray();
 	}
@@ -25,8 +24,6 @@ namespace my_utils {
         {
             close();
         }
-
-        DELETE_PTR(lstVertices);
         DELETE_PTR(iTagSearchEngine);
 	}
 
@@ -49,7 +46,8 @@ namespace my_utils {
 
     void obj_parser::processLine(const char* line)
     {
-        E_OBJ_TAGS_t lineTag = this->iTagSearchEngine->getValue(line);
+        my_utils::E_OBJ_TAGS_t lineTag; 
+        this->iTagSearchEngine->getValue(line, &lineTag);
 
         switch (lineTag)
         {
@@ -59,21 +57,26 @@ namespace my_utils {
         {
             if (iCurrentObjContainer != NULL)
             {
-                iCurrentObjContainer->persist(this->iOutputStream); //todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
-                delete iCurrentObjContainer;
-                iCurrentObjContainer = NULL;
+                iCurrentObjContainer->persist(this->iOutputStream); 
+                DELETE_PTR(iCurrentObjContainer);
             }
-            else {
-                iCurrentObjContainer = new obj_container(line, 2);
-            }
+            
+            iCurrentObjContainer = new obj_container();
+            iCurrentObjContainer->parse(line, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY:
         {
-            obj_vertex_element* vertex = new obj_vertex_element();
-            this->lstVertices->addLast(vertex);
+            iCurrentObjContainer->parseVertexArray(line, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
-        case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE:            
+        case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE:     
+        {
+            iCurrentObjContainer->parseVertexTexture(line, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+        } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_NORMAL:
+        {
+            iCurrentObjContainer->parseVertexNormal(line, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+        } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_FACE:
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_FILE:
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_USE:

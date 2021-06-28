@@ -1,18 +1,30 @@
 #pragma once
 #include <fstream>
+#include "abstractobj.h"
+#include "linkedlist.h"
 
 namespace my_utils {
 
-	class obj_container {
+	class obj_vertex_element;
+
+	class obj_container : abstractobj {
 	public:
-		obj_container(const char* line, unsigned int start);
+		obj_container();
 		virtual ~obj_container();
-		void persist(const std::ofstream* pOutputStream);
+		void persist(std::ofstream* pOutputStream);
+		bool parse(const char* pLine, int startIndex);
+		bool parseVertexArray(const char* pLine, int startIndex);
+		bool parseVertexTexture(const char* pLine, int startIndex);
+		bool parseVertexNormal(const char* pLine, int startIndex);
 
 	private:
-		const unsigned int pivotStart;
-		const char* i_pLine;
+		template <class T> bool parseFloatArray(linkedlist<T> * pList, const char* pLine, int startIndex);
 
+	private:
+		char* i_pObjName;
+		linkedlist<obj_vertex_element>* lstVertices;
+		linkedlist<obj_vertex_element>* lstTextures;
+		linkedlist<obj_vertex_element>* lstNormals;
 	};
 
 }

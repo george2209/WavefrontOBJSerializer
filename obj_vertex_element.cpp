@@ -1,21 +1,34 @@
 #include "obj_vertex_element.h"
+#include <string.h> //strlen
+#include <stdlib.h> //strtod 
+#include "my_utils.h"
+
 namespace my_utils {
 	obj_vertex_element::obj_vertex_element()
 	{
-		x = -1.0;
-		y = -1.0;
-		z = -1.0;
+		x = 0.0;
+		y = 0.0;
+		z = 0.0;
 	}
 
-	bool obj_vertex_element::parse(char* pLine, int startIndex)
+	bool obj_vertex_element::parse(const char* pLine, int startIndex)
 	{
-		int index = 0;
-		int pivot = startIndex;
-		while (pLine[pivot] != '\0')
+		int end = strlen(pLine);
+		char* pTmp;
+		char* line = new char[end- startIndex + 1];
+		line[end - startIndex] = NULL;
+
+		for (int i = startIndex; i < end; i++)
 		{
-			//aici am ramas
+			line[i - startIndex] = pLine[i];
 		}
 
-		return (index == 2);
+		x = strtof(line, &pTmp);
+		y = strtof(pTmp, &pTmp);
+		z = strtof(pTmp, &pTmp);
+
+		DELETE_ARR(line);
+
+		return true;
 	}
 }

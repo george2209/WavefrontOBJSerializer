@@ -142,6 +142,7 @@
     <ClCompile Include="abstractobj.cpp" />
     <ClCompile Include="objparser.cpp" />
     <ClCompile Include="obj_container.cpp" />
+    <ClCompile Include="obj_tag.cpp" />
     <ClCompile Include="obj_to_binary.cpp" />
     <ClCompile Include="obj_vertex_element.cpp" />
     <ClCompile Include="StringUtils.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="my_utils.h" />
     <ClInclude Include="objparser.h" />
     <ClInclude Include="obj_container.h" />
+    <ClInclude Include="obj_tag.h" />
     <ClInclude Include="obj_vertex_element.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="ternary_search.h" />

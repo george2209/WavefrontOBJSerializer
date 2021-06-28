@@ -22,7 +22,7 @@ namespace my_utils {
 		virtual ~ternary_tag_node();
 	public:
 		void addTagValue(const char * tag, unsigned int startIndex, int endIndex, E_OBJ_TAGS_t value);
-		E_OBJ_TAGS_t getValue(const char* pLine, unsigned int startIndex, int endIndex);
+		void getValue(const char* pLine, unsigned int startIndex, int endIndex, E_OBJ_TAGS_t * pOut);
 	private:
 		char tagChar;
 		E_OBJ_TAGS_t tagValue;

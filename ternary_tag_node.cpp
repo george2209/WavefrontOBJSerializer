@@ -54,37 +54,36 @@ namespace my_utils {
 		}
 	}
 
-	E_OBJ_TAGS_t ternary_tag_node::getValue(const char* pLine, unsigned int startIndex, int endIndex)
+	void ternary_tag_node::getValue(const char* pLine, unsigned int startIndex, int endIndex, E_OBJ_TAGS_t* pOut)
 	{
 		if (pLine[startIndex] == this->tagChar)
 		{
-			if (this->tagValue != E_OBJ_TAGS_t::OBJ_INVALID_TAG)
-				return this->tagValue; //match found!
-
-			if (startIndex == endIndex - 1)
+			if ((this->tagValue != E_OBJ_TAGS_t::OBJ_INVALID_TAG) ||
+				(startIndex == endIndex - 1))
 			{
-				return this->tagValue;
-			}
-			else {
+				*pOut = this->tagValue; //match found!
+			}		
+			else 
+			{
 				if (this->mid != NULL)
-					return this->mid->getValue(pLine, ++startIndex, endIndex);
+					this->mid->getValue(pLine, ++startIndex, endIndex, pOut);
 				else
-					return E_OBJ_TAGS_t::OBJ_INVALID_TAG;
+					*pOut = E_OBJ_TAGS_t::OBJ_INVALID_TAG;
 			}
 		}
 		else {
 			if (pLine[startIndex] < this->tagChar)
 			{
 				if(this->left != NULL)
-					return this->left->getValue(pLine, startIndex, endIndex);
+					this->left->getValue(pLine, startIndex, endIndex, pOut);
 				else 
-					return E_OBJ_TAGS_t::OBJ_INVALID_TAG;
+					*pOut = E_OBJ_TAGS_t::OBJ_INVALID_TAG;
 			}
 			else {
 				if(this->right != NULL)
-					return this->right->getValue(pLine, startIndex, endIndex);
+					this->right->getValue(pLine, startIndex, endIndex, pOut);
 				else
-					return E_OBJ_TAGS_t::OBJ_INVALID_TAG;
+					*pOut = E_OBJ_TAGS_t::OBJ_INVALID_TAG;
 			}
 		}
 	}

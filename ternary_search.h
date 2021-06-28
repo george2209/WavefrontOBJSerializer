@@ -4,6 +4,9 @@
 #include <string.h> //strlen
 
 namespace my_utils {
+
+	class obj_tag;
+
 	/// <summary>
 	/// This class will use the Ternary Search Tree in order to respond to an OBJ matching tag.
 	/// Reason was that in case the number of supported OBJ tags will grow the previous O(m*lg(n)) implementation may become inefficient over large files.
@@ -21,10 +24,10 @@ namespace my_utils {
 			this->root.addTagValue(tag, 0, strlen(tag), value);
 		};
 
-		inline E_OBJ_TAGS_t getValue(const char* pLine)
+		inline void getValue(const char* pLine, E_OBJ_TAGS_t* pOut)
 		{
-			return this->root.getValue(pLine, 0, strlen(pLine));
-		};
+			this->root.getValue(pLine, 0, strlen(pLine), pOut);
+		}
 
 	private:
 		ternary_tag_node root;
