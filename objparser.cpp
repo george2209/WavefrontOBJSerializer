@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "StringUtils.h"
 #include "ternary_search.h"
 #include "ternary_tag_node.h"
 #include "obj_container.h"

@@ -1,5 +1,5 @@
 #include "ternary_tag_node.h"
-#include "my_utils.h"
+#include "../my_utils.h"
 #include <iostream> //cout
 namespace my_utils {
 #define INVALID_CHAR (-1)

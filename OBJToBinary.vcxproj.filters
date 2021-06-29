@@ -27,9 +27,6 @@
     <ClInclude Include="obj_vertex_element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ternary_search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,7 +39,7 @@
     <ClInclude Include="obj_container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="obj_tag.h">
+    <ClInclude Include="math\rabin_karp_search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,19 +56,16 @@
     <ClCompile Include="obj_vertex_element.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ternary_search.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ternary_tag_node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="obj_container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="obj_tag.cpp">
+    <ClCompile Include="math\ternary_tag_node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math\rabin_karp_search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
