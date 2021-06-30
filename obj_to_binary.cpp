@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 
 	RabinKarpStringSearch rks;
 	int SIZE = 8;
-	char* line = new char[SIZE];
+	char* line = new char[SIZE + 1];
 	int i = 0;
 	line[i++] = 4; //0
 	line[i++] = 3; //1
@@ -32,8 +32,18 @@ int main(int argc, char* argv[])
 	line[i++] = 5; //5
 	line[i++] = 9; //6
 	line[i++] = 2; //7
+	line[i++] = 0; //8 EOL
 
-	cout << "my hash= " << rks.getHash(line, 1, 7 , 5) << "\n";
+	char* pattern = new char[3];
+	i = 0;
+	pattern[i++] = 3;
+	pattern[i++] = 1;
+	pattern[i++] = 0;
+
+	cout << "my hash= " << rks.getIndexOf(line, pattern, 0) << "\n";
+
+	DELETE_ARR(pattern);
+	DELETE_ARR(line);
 
 	return 0;
 }
