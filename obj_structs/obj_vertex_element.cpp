@@ -1,7 +1,7 @@
 #include "obj_vertex_element.h"
 #include <string.h> //strlen
 #include <stdlib.h> //strtod 
-#include "my_utils.h"
+#include "../my_utils.h"
 
 namespace my_utils {
 	obj_vertex_element::obj_vertex_element()
@@ -11,7 +11,7 @@ namespace my_utils {
 		z = 0.0;
 	}
 
-	bool obj_vertex_element::parse(const char* pLine, int startIndex)
+	bool obj_vertex_element::parse(const char* pLine, int startIndex, int endIndex)
 	{
 		int end = strlen(pLine);
 		char* pTmp;

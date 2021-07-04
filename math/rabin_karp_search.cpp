@@ -19,7 +19,7 @@ namespace my_utils {
 	int RabinKarpStringSearch::getIndexOf(const char* line, const char* pattern, unsigned int startingIndex)
 	{
 
-		return getIndexOf(line, pattern, 0, strlen(line));
+		return getIndexOf(line, pattern, startingIndex, strlen(line));
 	}
 
 	/// <summary>

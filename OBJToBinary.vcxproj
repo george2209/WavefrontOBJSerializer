@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\George\source\repos\OBJToBinary\math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\George\source\repos\OBJToBinary\obj_structs;C:\Users\George\source\repos\OBJToBinary\math;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>C:\Users\George\source\repos\OBJToBinary\math;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
@@ -141,25 +141,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="abstractobj.cpp" />
+    <ClCompile Include="obj_structs\abstractobj.cpp" />
     <ClCompile Include="math\rabin_karp_search.cpp" />
-    <ClCompile Include="math\ternary_tag_node.cpp" />
     <ClCompile Include="objparser.cpp" />
-    <ClCompile Include="obj_container.cpp" />
+    <ClCompile Include="obj_structs\mtl_element.cpp" />
+    <ClCompile Include="obj_structs\mtl_parser.cpp" />
+    <ClCompile Include="obj_structs\obj_face_element.cpp" />
+    <ClCompile Include="obj_structs\obj_root_element.cpp" />
     <ClCompile Include="obj_to_binary.cpp" />
-    <ClCompile Include="obj_vertex_element.cpp" />
-    <ClCompile Include="ternary_search.cpp" />
+    <ClCompile Include="obj_structs\obj_vertex_element.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="abstractobj.h" />
+    <ClInclude Include="obj_structs\abstractobj.h" />
     <ClInclude Include="linkedlist.h" />
     <ClInclude Include="math\rabin_karp_search.h" />
     <ClInclude Include="my_utils.h" />
     <ClInclude Include="objparser.h" />
-    <ClInclude Include="obj_container.h" />
-    <ClInclude Include="obj_vertex_element.h" />
-    <ClInclude Include="ternary_search.h" />
-    <ClInclude Include="ternary_tag_node.h" />
+    <ClInclude Include="obj_structs\mtl_element.h" />
+    <ClInclude Include="obj_structs\mtl_parser.h" />
+    <ClInclude Include="obj_structs\obj_face_element.h" />
+    <ClInclude Include="obj_structs\obj_root_element.h" />
+    <ClInclude Include="obj_structs\obj_structs.h" />
+    <ClInclude Include="obj_structs\obj_vertex_element.h" />
+    <ClInclude Include="math\ternary_search.h" />
+    <ClInclude Include="math\ternary_tag_node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

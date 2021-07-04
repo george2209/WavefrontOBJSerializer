@@ -1,29 +1,32 @@
 #include "objparser.h"
 #include <stdio.h>
-#include <string.h>
+#include <string.h> //strlen
 #include <iostream>
 #include "ternary_search.h"
 #include "ternary_tag_node.h"
-#include "obj_container.h"
+#include "obj_root_element.h"
+#include "mtl_parser.h"
 #include "my_utils.h"
 
 namespace my_utils {
     obj_parser::obj_parser(std::ofstream * pOutputStream)
 	{
-        this->iTagSearchEngine = new ternary_search();
-        iCurrentObjContainer = NULL;
-        iOutputStream = pOutputStream;
+        this->i_pTagSearchEngine = new ternary_search<E_OBJ_TAGS_t>();
+        this->i_pMTLParser = new mtl_parser();
+        i_pCurrentObjContainer = NULL;
+        i_pOutputStream = pOutputStream;
 
         buildOBJTagsArray();
 	}
 
     obj_parser::~obj_parser()
 	{
-        if (iCurrentObjContainer != NULL)
+        if (i_pCurrentObjContainer != NULL)
         {
             close();
         }
-        DELETE_PTR(iTagSearchEngine);
+        DELETE_PTR(i_pTagSearchEngine);
+        DELETE_PTR(i_pMTLParser);
 	}
 
 	/// <summary>
@@ -32,21 +35,21 @@ namespace my_utils {
 	/// <param name="objArr">a reference to an array of tags</param>
 	void obj_parser::buildOBJTagsArray()
 	{
-        this->iTagSearchEngine->addTag("# ", E_OBJ_TAGS_t::OBJ_COMMENT);
-        this->iTagSearchEngine->addTag("o ", E_OBJ_TAGS_t::OBJ_OBJ_NAME);
-        this->iTagSearchEngine->addTag("v ", E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY);
-        this->iTagSearchEngine->addTag("vt ", E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE);
-        this->iTagSearchEngine->addTag("vn ", E_OBJ_TAGS_t::OBJ_VERTEX_NORMAL);
-        this->iTagSearchEngine->addTag("f ", E_OBJ_TAGS_t::OBJ_FACE);
-        this->iTagSearchEngine->addTag("s ", E_OBJ_TAGS_t::OBJ_SMOOTHING);
-        this->iTagSearchEngine->addTag("mtllib ", E_OBJ_TAGS_t::OBJ_MTL_FILE);
-        this->iTagSearchEngine->addTag("usemtl ", E_OBJ_TAGS_t::OBJ_MTL_USE);
+        this->i_pTagSearchEngine->addTag("# ", E_OBJ_TAGS_t::OBJ_COMMENT);
+        this->i_pTagSearchEngine->addTag("o ", E_OBJ_TAGS_t::OBJ_OBJ_NAME);
+        this->i_pTagSearchEngine->addTag("v ", E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY);
+        this->i_pTagSearchEngine->addTag("vt ", E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE);
+        this->i_pTagSearchEngine->addTag("vn ", E_OBJ_TAGS_t::OBJ_VERTEX_NORMAL);
+        this->i_pTagSearchEngine->addTag("f ", E_OBJ_TAGS_t::OBJ_FACE);
+        this->i_pTagSearchEngine->addTag("s ", E_OBJ_TAGS_t::OBJ_SMOOTHING);
+        this->i_pTagSearchEngine->addTag("mtllib ", E_OBJ_TAGS_t::OBJ_MTL_FILE);
+        this->i_pTagSearchEngine->addTag("usemtl ", E_OBJ_TAGS_t::OBJ_MTL_USE);
 	}
 
-    void obj_parser::processLine(const char* line)
+    void obj_parser::processLine(const char* pLine)
     {
         my_utils::E_OBJ_TAGS_t lineTag; 
-        this->iTagSearchEngine->getValue(line, &lineTag);
+        this->i_pTagSearchEngine->getValue(pLine, &lineTag);
 
         switch (lineTag)
         {
@@ -54,36 +57,46 @@ namespace my_utils {
             break;
         case my_utils::E_OBJ_TAGS_t::OBJ_OBJ_NAME:
         {
-            if (iCurrentObjContainer != NULL)
+            if (i_pCurrentObjContainer != NULL)
             {
-                iCurrentObjContainer->persist(this->iOutputStream); 
-                DELETE_PTR(iCurrentObjContainer);
+                i_pCurrentObjContainer->persist(this->i_pOutputStream); 
+                DELETE_PTR(i_pCurrentObjContainer);
             }
             
-            iCurrentObjContainer = new obj_container();
-            iCurrentObjContainer->parse(line, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pCurrentObjContainer = new obj_root_element();
+            i_pCurrentObjContainer->parse(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
             
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY:
         {
-            iCurrentObjContainer->parseVertexArray(line, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pCurrentObjContainer->parseVertexArray(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE:     
         {
-            iCurrentObjContainer->parseVertexTexture(line, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pCurrentObjContainer->parseVertexTexture(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_NORMAL:
         {
-            iCurrentObjContainer->parseVertexNormal(line, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pCurrentObjContainer->parseVertexNormal(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_FACE:
+        {
+            i_pCurrentObjContainer->parseFace(pLine, 2);
+        } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_FILE:
+        {
+            int size = strlen(pLine) - 7; //7="mtllib " 
+            char* pFileName = new char[size + 1]; // 1 NULL termination
+            pFileName[size] = NULL;
+            COPY_CHAR_ARRAYS(pLine, 7, pFileName, 0, size);
+            i_pMTLParser->parse(pFileName);
+            DELETE_ARR(pFileName);
+        } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_USE:
         case my_utils::E_OBJ_TAGS_t::OBJ_SMOOTHING:
         {
             std::cout << "Info: tag not serialized: " << (int)lineTag << "\n";
         }break;
-        case my_utils::E_OBJ_TAGS_t::OBJ_NO_OF_TAGS:
         case my_utils::E_OBJ_TAGS_t::OBJ_INVALID_TAG:
         default:
             std::cout << "unknown tag: " << (int)lineTag << "\n";
@@ -96,9 +109,9 @@ namespace my_utils {
     /// </summary>
     void obj_parser::close()
     {
-        iCurrentObjContainer->persist(this->iOutputStream); //TODO..fix it!
-        delete iCurrentObjContainer;
-        iCurrentObjContainer = NULL;
+        i_pCurrentObjContainer->persist(this->i_pOutputStream); //TODO..fix it!
+        delete i_pCurrentObjContainer;
+        i_pCurrentObjContainer = NULL;
     }
 }
 
