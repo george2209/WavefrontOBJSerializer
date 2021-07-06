@@ -12,7 +12,7 @@ namespace my_utils {
 	class obj_parser
 	{
 	public:
-		obj_parser(std::ofstream * pOutputStream);
+		obj_parser(std::ofstream * pOpOutputStream, const char * pClassPath);
 		virtual ~obj_parser();
 		void processLine(const char* line);
 		void close();
@@ -23,6 +23,7 @@ namespace my_utils {
 		std::ofstream* i_pOutputStream;
 		ternary_search<E_OBJ_TAGS_t>* i_pTagSearchEngine;
 		mtl_parser* i_pMTLParser;
+		const char* i_pClassPath;
 	};
 }
 

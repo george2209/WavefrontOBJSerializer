@@ -7,9 +7,10 @@
 #include "obj_root_element.h"
 #include "mtl_parser.h"
 #include "my_utils.h"
+#include "obj_structs/obj_structs.h"
 
 namespace my_utils {
-    obj_parser::obj_parser(std::ofstream * pOutputStream)
+    obj_parser::obj_parser(std::ofstream* pOutputStream, const char* pClassPath) : i_pClassPath(pClassPath)
 	{
         this->i_pTagSearchEngine = new ternary_search<E_OBJ_TAGS_t>();
         this->i_pMTLParser = new mtl_parser();
@@ -86,9 +87,14 @@ namespace my_utils {
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_FILE:
         {
             int size = strlen(pLine) - 7; //7="mtllib " 
-            char* pFileName = new char[size + 1]; // 1 NULL termination
-            pFileName[size] = NULL;
-            COPY_CHAR_ARRAYS(pLine, 7, pFileName, 0, size);
+            int sizeFolder = strlen(this->i_pClassPath);
+            char* pFileName = new char[size + sizeFolder  + 1]; // 1 NULL termination
+            pFileName[size + sizeFolder] = NULL;
+
+            COPY_CHAR_ARRAYS(i_pClassPath, 0, pFileName, 0, sizeFolder);
+            COPY_CHAR_ARRAYS(pLine, 7, pFileName, sizeFolder, size);
+
+
             i_pMTLParser->parse(pFileName);
             DELETE_ARR(pFileName);
         } break;

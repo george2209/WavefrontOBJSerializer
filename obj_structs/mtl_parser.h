@@ -4,21 +4,7 @@
 
 namespace my_utils {
 
-	enum class E_MTL_TAGS_t
-	{
-		MTL_COMMENT = 0,
-		MTL_newmtl,
-		MTL_Ka,
-		MTL_Kd,
-		MTL_Ks,
-		MTL_Ns,
-		MTL_Ni,
-		MTL_d,
-		MTL_illum,
-		MTL_map_Kd,
-		OBJ_INVALID_TAG
-	};
-
+	enum class E_MTL_TAGS_t;
 	class mtl_element;
 	template <class T> class linkedlist;
 

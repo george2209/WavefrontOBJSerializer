@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 namespace my_utils {
-#define INVALID_INT (-1)
-#define INVALID_CHAR (-1)
+
+constexpr auto INVALID_NUMBER = -1;
 
 #define DELETE_PTR(__ptr__) \
 if (__ptr__ != NULL) \

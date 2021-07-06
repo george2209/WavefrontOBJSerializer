@@ -5,7 +5,7 @@
 #include "../my_utils.h"
 #include "mtl_element.h"
 #include "../linkedlist.h"
-
+#include "obj_structs.h"
 
 #include <direct.h> // _getcwd
 
@@ -49,8 +49,8 @@ namespace my_utils {
 		//INIT
 		using namespace std;
 		ifstream objStream;
+		
 		objStream.open(pFileName, ifstream::in);
-
 		bool isStreamOK = objStream.good();
 		if (isStreamOK) {
 			int LINE_MAX_LENGTH = 512;
@@ -71,25 +71,17 @@ namespace my_utils {
 		else {
 			int LINE_MAX_LENGTH = 2048;
 			char* buf = new char[LINE_MAX_LENGTH];
-
 			strerror_s(buf, LINE_MAX_LENGTH, errno);
-
 			cerr << "Error: " << buf << "\n";
-
 			_getcwd(buf, LINE_MAX_LENGTH);
-
 			cout << "cannot open the MTL file: " << buf << " "<< pFileName << "\n";
-
 			DELETE_ARR(buf);
-			
-			
-
-
 			assert(isStreamOK);
 		}
 
 		//CLEANUP
 		objStream.close();
+
 		return true;
 	}
 
@@ -110,6 +102,22 @@ namespace my_utils {
 			this->i_pCurrentMaterial = new mtl_element();
 			this->i_pMaterialsList->addLast(this->i_pCurrentMaterial);
 			isSuccess = this->i_pCurrentMaterial->parseMaterialName(pLine, 7);
+		} break;
+		case E_MTL_TAGS_t::MTL_Ka:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseKA(pLine, 2);
+		} break;
+		case E_MTL_TAGS_t::MTL_Kd:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseKD(pLine, 2);
+		} break;
+		case E_MTL_TAGS_t::MTL_Ks:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseKS(pLine, 2);
+		} break;
+		case E_MTL_TAGS_t::MTL_Ke:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseKE(pLine, 2);
 		} break;
 		default:
 			break;

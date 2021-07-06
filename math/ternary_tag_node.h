@@ -10,7 +10,7 @@ namespace my_utils {
 		ternary_tag_node()
 		{
 			left = NULL; right = NULL; mid = NULL;
-			tagChar = INVALID_CHAR;
+			tagChar = INVALID_NUMBER;
 			tagValue = T::OBJ_INVALID_TAG;
 		};
 		virtual ~ternary_tag_node()
@@ -22,7 +22,7 @@ namespace my_utils {
 	public:
 		void addTagValue(const char * tag, unsigned int startIndex, int endIndex, T value)
 		{
-			if (this->tagChar == INVALID_CHAR || this->tagChar == tag[startIndex])
+			if (this->tagChar == INVALID_NUMBER || this->tagChar == tag[startIndex])
 			{
 				this->tagChar = tag[startIndex];
 				if (startIndex == endIndex - 1)
