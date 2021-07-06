@@ -5,7 +5,7 @@ You may want to use this file to directly load into the memory the OBJ object(s)
 Constraints:
 1. Only triangulated faces supported at this moment
 2. No smooth directive is supported
-3. MTL "Ka R G B" is supported but no support for "Ka spectral..."
+3. MTL "Ka R G B" is supported but no support for "Ka spectral..." ..same for Kd, Ks
 
 Binary format:
 - see file "docs/OBJ to binary structure_20210611_V1.0.pptx"
