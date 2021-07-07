@@ -6,6 +6,8 @@ Constraints:
 1. Only triangulated faces supported at this moment
 2. No smooth directive is supported
 3. MTL "Ka R G B" is supported but no support for "Ka spectral..." ..same for Kd, Ks
+4. map_Kd is supported (only the file name will be maped to the object)
+5. map_Ka, map_Ks, map_Ns, map_d
 
 Binary format:
 - see file "docs/OBJ to binary structure_20210611_V1.0.pptx"
