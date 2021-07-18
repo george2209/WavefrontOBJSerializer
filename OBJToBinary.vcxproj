@@ -141,7 +141,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="obj_structs\abstractobj.cpp" />
     <ClCompile Include="math\rabin_karp_search.cpp" />
     <ClCompile Include="objparser.cpp" />
     <ClCompile Include="obj_structs\mtl_element.cpp" />
@@ -152,11 +151,11 @@
     <ClCompile Include="obj_structs\obj_vertex_element.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="obj_structs\abstractobj.h" />
     <ClInclude Include="linkedlist.h" />
     <ClInclude Include="math\rabin_karp_search.h" />
     <ClInclude Include="my_utils.h" />
     <ClInclude Include="objparser.h" />
+    <ClInclude Include="obj_structs\abstractserializer.h" />
     <ClInclude Include="obj_structs\mtl_element.h" />
     <ClInclude Include="obj_structs\mtl_parser.h" />
     <ClInclude Include="obj_structs\obj_face_element.h" />

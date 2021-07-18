@@ -12,7 +12,7 @@
 
 namespace my_utils {
 
-	obj_root_element::obj_root_element(): i_pObjName(NULL)
+	obj_root_element::obj_root_element(): i_pObjName(NULL), i_mtlID(INVALID_NUMBER)
 	{
 		lstVertices = new linkedlist<obj_vertex_element>();
 		lstTextures = new linkedlist<obj_vertex_element>();
@@ -49,6 +49,21 @@ namespace my_utils {
 			this->i_pObjName[i - start] = line[i];
 
 		return start < max_index;
+	}
+
+	bool obj_root_element::getParseMaterialName(const char* pLine, int startIndex, char** i_arrOut)
+	{
+#ifdef _DEBUG
+		assert((*i_arrOut) == NULL);
+#endif // _DEBUG
+
+		int size = strlen(pLine) - startIndex;
+		(*i_arrOut) = new char[size + 1];
+		(*i_arrOut)[size] = NULL;
+
+		COPY_CHAR_ARRAYS(pLine, startIndex, (*i_arrOut), 0, size);
+
+		return true;
 	}
 
 	bool obj_root_element::parseVertexArray(const char* pLine, int startIndex)
@@ -154,6 +169,9 @@ namespace my_utils {
 		pOutputStream->write((char*)&noOfChars, sizeof(int));
 		//name of the obj
 		pOutputStream->write(this->i_pObjName, sizeof(char) * noOfChars);
+
+		//write the mtl ID
+		pOutputStream->write((char*)&i_mtlID, sizeof(short));
 
 		//no of faces
 		int noOfFaces = this->lstFaces->size();

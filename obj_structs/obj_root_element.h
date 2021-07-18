@@ -1,14 +1,14 @@
 #pragma once
 #include <fstream>
-#include "abstractobj.h"
 #include "../linkedlist.h"
+#include "abstractserializer.h"
 
 namespace my_utils {
 
 	class obj_vertex_element;
 	class obj_face_element;
 
-	class obj_root_element : public abstractobj {
+	class obj_root_element : protected abstractserializer {
 	public:
 		obj_root_element();
 		virtual ~obj_root_element();
@@ -18,6 +18,11 @@ namespace my_utils {
 		bool parseVertexTexture(const char* pLine, int startIndex);
 		bool parseVertexNormal(const char* pLine, int startIndex);
 		bool parseFace(const char* pLine, int startIndex);
+		bool getParseMaterialName(const char* pLine, int startIndex, char ** i_arrOut);
+		inline void setMTLID(short id)
+		{
+			this->i_mtlID = id;
+		};
 
 	private:
 		template <class T> bool parseFloatArray(linkedlist<T> * pList, const char* pLine, int startIndex);
@@ -26,6 +31,7 @@ namespace my_utils {
 
 	private:
 		char* i_pObjName;
+		short i_mtlID;
 		linkedlist<obj_vertex_element>* lstVertices;
 		linkedlist<obj_vertex_element>* lstTextures;
 		linkedlist<obj_vertex_element>* lstNormals;

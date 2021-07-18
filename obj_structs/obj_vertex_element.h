@@ -1,8 +1,8 @@
 #pragma once
-#include "abstractobj.h"
+
 
 namespace my_utils {
-	class obj_vertex_element : abstractobj
+	class obj_vertex_element
 	{
 	public:
 		obj_vertex_element();

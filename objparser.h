@@ -1,13 +1,14 @@
 #pragma once
 
 #include <fstream>
-#include "obj_structs.h"
 
 namespace my_utils {
 
+	enum class E_OBJ_TAGS_t;
 	class obj_root_element;
 	class mtl_parser;
 	template <class T> class ternary_search;
+	
 	
 	class obj_parser
 	{

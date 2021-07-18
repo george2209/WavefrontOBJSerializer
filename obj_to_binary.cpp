@@ -4,7 +4,6 @@
 #include<iostream> //cout
 #include <fstream> //ifstream
 #include "objparser.h"
-#include "abstractobj.h"
 #include "my_utils.h"
 #include "obj_structs.h"
 #include <assert.h> //assert

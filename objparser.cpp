@@ -8,6 +8,7 @@
 #include "mtl_parser.h"
 #include "my_utils.h"
 #include "obj_structs/obj_structs.h"
+#include "obj_structs/mtl_element.h"
 
 namespace my_utils {
     obj_parser::obj_parser(std::ofstream* pOutputStream, const char* pClassPath) : i_pClassPath(pClassPath)
@@ -49,7 +50,7 @@ namespace my_utils {
 
     void obj_parser::processLine(const char* pLine)
     {
-        my_utils::E_OBJ_TAGS_t lineTag; 
+        E_OBJ_TAGS_t lineTag;
         this->i_pTagSearchEngine->getValue(pLine, &lineTag);
 
         switch (lineTag)
@@ -94,11 +95,24 @@ namespace my_utils {
             COPY_CHAR_ARRAYS(i_pClassPath, 0, pFileName, 0, sizeFolder);
             COPY_CHAR_ARRAYS(pLine, 7, pFileName, sizeFolder, size);
 
-
             i_pMTLParser->parse(pFileName);
             DELETE_ARR(pFileName);
+
+            i_pMTLParser->persist(this->i_pOutputStream);
+
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_USE:
+        {
+            char* pMTLName = NULL;
+            i_pCurrentObjContainer->getParseMaterialName(pLine, 7, &pMTLName);
+
+            mtl_element* pElement = NULL;
+            i_pMTLParser->getMaterialByName(pMTLName, &pElement);
+
+            i_pCurrentObjContainer->setMTLID(pElement->getID());
+            
+            DELETE_ARR(pMTLName);
+        } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_SMOOTHING:
         {
             std::cout << "Info: tag not serialized: " << (int)lineTag << "\n";

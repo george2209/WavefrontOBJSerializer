@@ -39,9 +39,6 @@
     <ClInclude Include="math\ternary_tag_node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="obj_structs\abstractobj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="obj_structs\obj_face_element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +49,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="obj_structs\obj_structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_structs\abstractserializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="obj_structs\obj_vertex_element.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="obj_structs\abstractobj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="obj_structs\obj_face_element.cpp">

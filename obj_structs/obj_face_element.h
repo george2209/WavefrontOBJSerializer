@@ -1,8 +1,7 @@
 #pragma once
-#include "abstractobj.h"
 
 namespace my_utils {
-	class obj_face_element : public abstractobj
+	class obj_face_element
 	{
 	public:
 		obj_face_element();

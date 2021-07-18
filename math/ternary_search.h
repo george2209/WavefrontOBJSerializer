@@ -11,8 +11,7 @@ namespace my_utils {
 	/// <summary>
 	/// This class will use the Ternary Search Tree in order to respond to an OBJ matching tag.
 	/// Reason was that in case the number of supported OBJ tags will grow the previous O(m*lg(n)) implementation may become inefficient over large files.
-	/// This class can be omited as the implementation was done inside the ternary_tag_node class, however it is here kept for simplicity in understanding the code.
-	/// This is why the methods are actualy declared as "inline".
+	/// This class can be omited as the implementation was done inside the ternary_tag_node class, however it is here kept for simplicity in understanding the code.	
 	/// </summary>
 	template <class T> class ternary_search
 	{
@@ -26,11 +25,12 @@ namespace my_utils {
 			DELETE_PTR(i_pRoot);
 		};
 
-		void addTag(const char* tag, T value)
+		inline void addTag(const char* tag, T value)
 		{
 			this->i_pRoot->addTagValue(tag, 0, strlen(tag), value);
 		};
-		void getValue(const char* pLine, T* pOut)
+		
+		inline void getValue(const char* pLine, T* pOut)
 		{
 			this->i_pRoot->getValue(pLine, 0, strlen(pLine), pOut);
 		};
