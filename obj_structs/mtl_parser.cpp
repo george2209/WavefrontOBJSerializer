@@ -111,6 +111,8 @@ namespace my_utils {
 			this->persistCharArray(pOutputStream, pElement->getMaterialName());
 			//KA
 			this->persistOptionalVertex(pOutputStream, pElement->getKA());
+			//KD
+			this->persistOptionalVertex(pOutputStream, pElement->getKD());
 			//KS
 			this->persistOptionalVertex(pOutputStream, pElement->getKS());
 			//KE

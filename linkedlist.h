@@ -38,13 +38,14 @@ namespace my_utils {
 			}
 		};
 
-		void addLast(T*& val)
+		void addLast(T* val)
 		{
 			if (listSize == 0)
 			{
 				pFirst = new NODE_t<T>();
 				pFirst->value = val;
 				pFirst->next = NULL;
+				pLast = pFirst;
 			}
 			else {
 				if (pFirst->next == NULL)
@@ -82,6 +83,11 @@ namespace my_utils {
 		NODE_t<T>* getFirstElement() 
 		{
 			return this->pFirst;
+		};
+
+		NODE_t<T>* getLastElement()
+		{
+			return this->pLast;
 		};
 
 		inline int size() { return listSize; };

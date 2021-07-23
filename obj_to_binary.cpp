@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
 	}
 	ifstream objStream;
 	ofstream binStream;
-	obj_parser objParser(&binStream, parserOptions.OBJ_CLASS_PATH);
+	obj_parser objParser(parserOptions.OBJ_CLASS_PATH);
 
 
 
@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
 				objParser.processLine(buf);
 			}
 		}
-		objParser.close();
+		objParser.saveAllData(binStream);
 		delete[] buf;
 		buf = NULL;
 	}

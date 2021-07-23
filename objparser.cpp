@@ -9,26 +9,22 @@
 #include "my_utils.h"
 #include "obj_structs/obj_structs.h"
 #include "obj_structs/mtl_element.h"
+#include "linkedlist.h"
 
 namespace my_utils {
-    obj_parser::obj_parser(std::ofstream* pOutputStream, const char* pClassPath) : i_pClassPath(pClassPath)
+    obj_parser::obj_parser(const char* pClassPath) : i_pClassPath(pClassPath)
 	{
         this->i_pTagSearchEngine = new ternary_search<E_OBJ_TAGS_t>();
         this->i_pMTLParser = new mtl_parser();
-        i_pCurrentObjContainer = NULL;
-        i_pOutputStream = pOutputStream;
-
+        i_pListObj = new linkedlist<obj_root_element>();
         buildOBJTagsArray();
 	}
 
     obj_parser::~obj_parser()
 	{
-        if (i_pCurrentObjContainer != NULL)
-        {
-            close();
-        }
         DELETE_PTR(i_pTagSearchEngine);
         DELETE_PTR(i_pMTLParser);
+        DELETE_PTR(i_pListObj);
 	}
 
 	/// <summary>
@@ -59,31 +55,25 @@ namespace my_utils {
             break;
         case my_utils::E_OBJ_TAGS_t::OBJ_OBJ_NAME:
         {
-            if (i_pCurrentObjContainer != NULL)
-            {
-                i_pCurrentObjContainer->persist(this->i_pOutputStream); 
-                DELETE_PTR(i_pCurrentObjContainer);
-            }
-            
-            i_pCurrentObjContainer = new obj_root_element();
-            i_pCurrentObjContainer->parse(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->addLast(new obj_root_element());
+            i_pListObj->getLastElement()->value->parse(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
             
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY:
         {
-            i_pCurrentObjContainer->parseVertexArray(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->getLastElement()->value->parseVertexArray(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE:     
         {
-            i_pCurrentObjContainer->parseVertexTexture(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->getLastElement()->value->parseVertexTexture(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_NORMAL:
         {
-            i_pCurrentObjContainer->parseVertexNormal(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->getLastElement()->value->parseVertexNormal(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_FACE:
         {
-            i_pCurrentObjContainer->parseFace(pLine, 2);
+            i_pListObj->getLastElement()->value->parseFace(pLine, 2);
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_FILE:
         {
@@ -97,19 +87,16 @@ namespace my_utils {
 
             i_pMTLParser->parse(pFileName);
             DELETE_ARR(pFileName);
-
-            i_pMTLParser->persist(this->i_pOutputStream);
-
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_MTL_USE:
         {
             char* pMTLName = NULL;
-            i_pCurrentObjContainer->getParseMaterialName(pLine, 7, &pMTLName);
+            i_pListObj->getLastElement()->value->getParseMaterialName(pLine, 7, &pMTLName);
 
             mtl_element* pElement = NULL;
             i_pMTLParser->getMaterialByName(pMTLName, &pElement);
 
-            i_pCurrentObjContainer->setMTLID(pElement->getID());
+            i_pListObj->getLastElement()->value->setMTLID(pElement->getID());
             
             DELETE_ARR(pMTLName);
         } break;
@@ -127,11 +114,23 @@ namespace my_utils {
     /// <summary>
     /// release all the resources used by this class
     /// </summary>
-    void obj_parser::close()
+    void obj_parser::saveAllData(std::ofstream& outputStream)
     {
-        i_pCurrentObjContainer->persist(this->i_pOutputStream); //TODO..fix it!
-        delete i_pCurrentObjContainer;
-        i_pCurrentObjContainer = NULL;
+        //write all materials
+        i_pMTLParser->persist(&outputStream);
+
+        //write number of objects
+        short noOfObj = (short)(this->i_pListObj->size());
+        outputStream.write((char*) &noOfObj, sizeof(short));
+
+        //write all objects
+        NODE_t<obj_root_element>* pTmp = i_pListObj->getFirstElement();
+        while (pTmp != NULL)
+        {
+            pTmp->value->persist(&outputStream);
+            pTmp = pTmp->next;
+        }
+
     }
 }
 
