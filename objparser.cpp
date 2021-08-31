@@ -14,6 +14,10 @@
 namespace my_utils {
     obj_parser::obj_parser(const char* pClassPath) : i_pClassPath(pClassPath)
 	{
+        lstVertices = new linkedlist<obj_vertex_element>();
+        lstTextures = new linkedlist<obj_vertex_element>();
+        lstNormals = new linkedlist<obj_vertex_element>();
+
         this->i_pTagSearchEngine = new ternary_search<E_OBJ_TAGS_t>();
         this->i_pMTLParser = new mtl_parser();
         i_pListObj = new linkedlist<obj_root_element>();
@@ -22,6 +26,10 @@ namespace my_utils {
 
     obj_parser::~obj_parser()
 	{
+        DELETE_PTR(lstVertices);
+        DELETE_PTR(lstTextures);
+        DELETE_PTR(lstNormals);
+
         DELETE_PTR(i_pTagSearchEngine);
         DELETE_PTR(i_pMTLParser);
         DELETE_PTR(i_pListObj);
@@ -61,15 +69,15 @@ namespace my_utils {
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_ARRAY:
         {
-            i_pListObj->getLastElement()->value->parseVertexArray(pLine, 2);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->getLastElement()->value->parseVertexArray(pLine, 2, lstVertices);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_TEXTURE:     
         {
-            i_pListObj->getLastElement()->value->parseVertexTexture(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->getLastElement()->value->parseVertexTexture(pLine, 3, lstTextures);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_VERTEX_NORMAL:
         {
-            i_pListObj->getLastElement()->value->parseVertexNormal(pLine, 3);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
+            i_pListObj->getLastElement()->value->parseVertexNormal(pLine, 3, lstNormals);//todo..replace the struct E_OBJ_TAGS_t with a class to return more values 2=length of this tag
         } break;
         case my_utils::E_OBJ_TAGS_t::OBJ_FACE:
         {
@@ -123,13 +131,36 @@ namespace my_utils {
         short noOfObj = (short)(this->i_pListObj->size());
         outputStream.write((char*) &noOfObj, sizeof(short));
 
+        //collect all the data in arrays
+        obj_vertex_element* pArrVertices = new obj_vertex_element[lstVertices->size()];
+        lstVertices->asArray(pArrVertices);
+        obj_vertex_element* pArrTextures = NULL;
+        obj_vertex_element* pArrNormals = NULL;
+
+        if (lstTextures->size() > 0)
+        {
+            pArrTextures = new obj_vertex_element[lstTextures->size()];
+            lstTextures->asArray(pArrTextures);
+        }
+
+        if (lstNormals->size() > 0)
+        {
+            pArrNormals = new obj_vertex_element[lstNormals->size()];
+            lstNormals->asArray(pArrNormals);
+        }
+
+
         //write all objects
         NODE_t<obj_root_element>* pTmp = i_pListObj->getFirstElement();
         while (pTmp != NULL)
         {
-            pTmp->value->persist(&outputStream);
+            pTmp->value->persist(&outputStream, pArrVertices, pArrTextures, pArrNormals);
             pTmp = pTmp->next;
         }
+
+        DELETE_ARR(pArrVertices);
+        DELETE_ARR(pArrTextures);
+        DELETE_ARR(pArrNormals);
 
     }
 }

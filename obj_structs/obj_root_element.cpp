@@ -14,18 +14,12 @@ namespace my_utils {
 
 	obj_root_element::obj_root_element(): i_pObjName(NULL), i_mtlID(INVALID_NUMBER)
 	{
-		lstVertices = new linkedlist<obj_vertex_element>();
-		lstTextures = new linkedlist<obj_vertex_element>();
-		lstNormals = new linkedlist<obj_vertex_element>();
 		lstFaces = new linkedlist<obj_face_element>();
 	}
 
 	obj_root_element::~obj_root_element()
 	{
 		DELETE_PTR(i_pObjName);
-		DELETE_PTR(lstVertices);
-		DELETE_PTR(lstTextures);
-		DELETE_PTR(lstNormals);
 		DELETE_PTR(lstFaces);
 	}
 
@@ -66,20 +60,20 @@ namespace my_utils {
 		return true;
 	}
 
-	bool obj_root_element::parseVertexArray(const char* pLine, int startIndex)
+	bool obj_root_element::parseVertexArray(const char* pLine, int startIndex, linkedlist<obj_vertex_element>* lstVertices)
 	{
-		return parseFloatArray<obj_vertex_element>(this->lstVertices, pLine, startIndex);
+		return parseFloatArray<obj_vertex_element>(lstVertices, pLine, startIndex);
 		
 	}
 
-	bool obj_root_element::parseVertexTexture(const char* pLine, int startIndex)
+	bool obj_root_element::parseVertexTexture(const char* pLine, int startIndex, linkedlist<obj_vertex_element>* lstTextures)
 	{
-		return parseFloatArray<obj_vertex_element>(this->lstTextures, pLine, startIndex);
+		return parseFloatArray<obj_vertex_element>(lstTextures, pLine, startIndex);
 	}
 
-	bool obj_root_element::parseVertexNormal(const char* pLine, int startIndex)
+	bool obj_root_element::parseVertexNormal(const char* pLine, int startIndex, linkedlist<obj_vertex_element>* lstNormals)
 	{
-		return parseFloatArray<obj_vertex_element>(this->lstNormals, pLine, startIndex);
+		return parseFloatArray<obj_vertex_element>(lstNormals, pLine, startIndex);
 	}
 
 	/// <summary>
@@ -162,11 +156,11 @@ namespace my_utils {
 	}
 
 
-	void obj_root_element::persist(std::ofstream* pOutputStream)
+	void obj_root_element::persist(std::ofstream* pOutputStream, obj_vertex_element* pArrVertices, obj_vertex_element* pArrTextures, obj_vertex_element* pArrNormals)
 	{
-		int noOfChars = strlen(this->i_pObjName) + 1; //add EOL too.
+		short noOfChars = (short) strlen(this->i_pObjName) + 1; //add EOL too.
 		//no of characters
-		pOutputStream->write((char*)&noOfChars, sizeof(int));
+		pOutputStream->write((char*)&noOfChars, sizeof(short));
 		//name of the obj
 		pOutputStream->write(this->i_pObjName, sizeof(char) * noOfChars);
 
@@ -180,22 +174,8 @@ namespace my_utils {
 		assert(noOfFaces%3 == 0);
 #endif // _DEBUG
 		//persist all faces(triangles)
-		obj_vertex_element* pArrVertices = new obj_vertex_element[lstVertices->size()];
-		lstVertices->asArray(pArrVertices);
-		obj_vertex_element* pArrTextures = NULL;
-		obj_vertex_element* pArrNormals = NULL;
-
-		if (lstTextures->size() > 0)
-		{
-			pArrTextures = new obj_vertex_element[lstTextures->size()];
-			lstTextures->asArray(pArrTextures);
-		}
-
-		if (lstNormals->size() > 0)
-		{
-			pArrNormals = new obj_vertex_element[lstNormals->size()];
-			lstNormals->asArray(pArrNormals);
-		}
+		
+		
 
 
 		NODE_t<obj_face_element>* pFace = lstFaces->getFirstElement();
@@ -243,21 +223,10 @@ namespace my_utils {
 			pFace = pFace->next;
 		}
 
-		pOutputStream->flush();
-
-		DELETE_ARR(pArrVertices);
-		DELETE_ARR(pArrTextures);
-		DELETE_ARR(pArrNormals);
-
-		DELETE_PTR(lstVertices);
-		DELETE_PTR(lstTextures);
-		DELETE_PTR(lstNormals);
+		pOutputStream->flush();		
 		DELETE_PTR(lstFaces);
 
 		//rebuild all the lists in case use have more obejcts inside the OBJ file
-		lstVertices = new linkedlist<obj_vertex_element>();
-		lstTextures = new linkedlist<obj_vertex_element>();
-		lstNormals = new linkedlist<obj_vertex_element>();
-		lstFaces = new linkedlist<obj_face_element>();
+		//lstFaces = new linkedlist<obj_face_element>();
 	}
 }
