@@ -20,6 +20,7 @@ namespace my_utils
 		bool parseMapKa(const char* pLine, int startingIndex);
 		bool parseMapKd(const char* pLine, int startingIndex);
 		bool parseMapKs(const char* pLine, int startingIndex);
+		bool parseMapKe(const char* pLine, int startingIndex);
 		bool parseMapNs(const char* pLine, int startingIndex);
 		bool parseMapD(const char* pLine, int startingIndex);
 	
@@ -40,6 +41,7 @@ namespace my_utils
 		inline const char* getMapKdFileName() { return this->i_arrMapKdFile; };
 		inline const char* getMapKaFileName() { return this->i_arrMapKaFile; };
 		inline const char* getMapKsFileName() { return this->i_arrMapKsFile; };
+		inline const char* getMapKeFileName() { return this->i_arrMapKeFile; };
 		inline const char* getMapNsFileName() { return this->i_arrMapNsFile; };
 		inline const char* getMapDFileName() { return this->i_arrMapDFile; };
 
@@ -89,6 +91,10 @@ namespace my_utils
 		char* i_arrMapKsFile; //Specifies that a color texture file or color procedural texture file is 
 							   //linked to the specular reflectivity of the material.During rendering,
 							   //the map_Ks value is multiplied by the Ks value.
+
+		char* i_arrMapKeFile; //Specifies that the "emissive  coeficient" :
+								//Ke and map_Ke for emissive color equivalents to Kd and map_Kd 
+								//the map_Ke value is multiplied by the Ke value.
 
 		char* i_arrMapNsFile; //Specifies that a scalar texture file or scalar procedural texture file 
 							   //is linked to the specular exponent of the material.During rendering,

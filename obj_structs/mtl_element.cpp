@@ -25,6 +25,7 @@ namespace my_utils
 		i_arrMapKaFile = NULL;
 		i_arrMapKdFile = NULL;
 		i_arrMapKsFile = NULL;
+		i_arrMapKeFile = NULL;
 		i_arrMapNsFile = NULL;
 		i_arrMapDFile = NULL;
 	}
@@ -35,6 +36,7 @@ namespace my_utils
 		DELETE_ARR(i_arrMapKaFile);
 		DELETE_ARR(i_arrMapKdFile);
 		DELETE_ARR(i_arrMapKsFile);
+		DELETE_ARR(i_arrMapKeFile);
 		DELETE_ARR(i_arrMapNsFile);
 		DELETE_ARR(i_arrMapDFile);
 		DELETE_PTR(KA);
@@ -214,6 +216,17 @@ namespace my_utils
 	bool mtl_element::parseMapKs(const char* pLine, int startingIndex)
 	{
 		return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapKsFile);
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pLine"></param>
+	/// <param name="startingIndex"></param>
+	/// <returns></returns>
+	bool mtl_element::parseMapKe(const char* pLine, int startingIndex)
+	{
+		return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapKeFile);
 	}
 
 	/// <summary>

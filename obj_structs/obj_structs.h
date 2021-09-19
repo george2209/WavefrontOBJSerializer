@@ -53,7 +53,9 @@ namespace my_utils {
 		MTL_d,
 		MTL_illum,
 		MTL_map_Kd,
-		MTL_map_Ka
+		MTL_map_Ka,
+		MTL_map_Ks,
+		MTL_map_Ke
 	};
 
 //	using namespace std;

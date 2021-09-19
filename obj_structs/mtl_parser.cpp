@@ -135,6 +135,8 @@ namespace my_utils {
 			this->persistOptionalCharArray(pOutputStream, pElement->getMapKdFileName());
 			//map_ks
 			this->persistOptionalCharArray(pOutputStream, pElement->getMapKsFileName());
+			//map_ke
+			this->persistOptionalCharArray(pOutputStream, pElement->getMapKeFileName());
 			//map_ns
 			this->persistOptionalCharArray(pOutputStream, pElement->getMapNsFileName());
 			//map_d
@@ -248,6 +250,14 @@ namespace my_utils {
 		case E_MTL_TAGS_t::MTL_map_Ka:
 		{
 			isSuccess = this->i_pCurrentMaterial->parseMapKa(pLine, 7);
+		} break;
+		case E_MTL_TAGS_t::MTL_map_Ks:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseMapKs(pLine, 7);
+		} break;
+		case E_MTL_TAGS_t::MTL_map_Ke:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseMapKe(pLine, 7);
 		} break;
 		default:
 			std::cout << "unsuported MTL Tag detected: " << (int)lineTag << "\n";
