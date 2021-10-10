@@ -11,7 +11,7 @@
 namespace my_utils
 {
 
-	mtl_element::mtl_element(short id) : i_ID(id)
+	mtl_element::mtl_element(short id) : i_ID(id), i_map_bump_bm(1.0f)
 	{
 		KA = NULL;
 		KD = NULL;
@@ -28,6 +28,7 @@ namespace my_utils
 		i_arrMapKeFile = NULL;
 		i_arrMapNsFile = NULL;
 		i_arrMapDFile = NULL;
+		i_arrMapBumpFile = NULL;
 	}
 
 	mtl_element::~mtl_element()
@@ -39,6 +40,7 @@ namespace my_utils
 		DELETE_ARR(i_arrMapKeFile);
 		DELETE_ARR(i_arrMapNsFile);
 		DELETE_ARR(i_arrMapDFile);
+		DELETE_ARR(i_arrMapBumpFile);
 		DELETE_PTR(KA);
 		DELETE_PTR(KD);
 		DELETE_PTR(KS);
@@ -249,6 +251,61 @@ namespace my_utils
 	bool mtl_element::parseMapD(const char* pLine, int startingIndex)
 	{
 		return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapDFile);
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pLine"></param>
+	/// <param name="startingIndex"></param>
+	/// <returns></returns>
+	bool mtl_element::parseMapBump(const char* pLine, int startingIndex)
+	{
+		bool success = true;
+
+
+		//check for '-bm' parameter
+		if (pLine[startingIndex] == '-') {
+			//with -bm parameter
+			startingIndex += 4; // eliminate '-bm '
+			int size = strlen(pLine);
+			int endBmValueIndex = size;
+			for (int i = startingIndex; i < size; i++) {
+				if (pLine[i] == ' ')
+				{
+					endBmValueIndex = i;
+					break;
+				}
+			}
+#ifdef _DEBUG
+			assert(endBmValueIndex < size);
+#endif // _DEBUG
+			if (endBmValueIndex < size) {
+				//parse BM parameter
+				int tmpSize = endBmValueIndex - startingIndex + 1;
+				char* pTmp = new char[tmpSize];
+				pTmp[tmpSize - 1] = NULL;
+				for (int i = startingIndex; i < startingIndex + tmpSize - 1; i++) {
+					pTmp[i - startingIndex] = pLine[i];
+				}
+				success = this->parseFloat(&(this->i_map_bump_bm), pTmp, 0);
+				DELETE_ARR(pTmp);
+#ifdef _DEBUG
+				assert(success);
+#endif // _DEBUG
+				startingIndex = endBmValueIndex + 1;
+			}
+			else {
+				success = false;
+			}
+
+			return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapBumpFile);
+
+		}
+		
+
+		
+		
 	}
 
 	/// <summary>

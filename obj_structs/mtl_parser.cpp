@@ -59,7 +59,12 @@ namespace my_utils {
 		this->i_pTagSearchEngine->addTag("Ni ", E_MTL_TAGS_t::MTL_Ni);
 		this->i_pTagSearchEngine->addTag("d ", E_MTL_TAGS_t::MTL_d);
 		this->i_pTagSearchEngine->addTag("illum ", E_MTL_TAGS_t::MTL_illum);
+		this->i_pTagSearchEngine->addTag("map_Ka ", E_MTL_TAGS_t::MTL_map_Ka);
 		this->i_pTagSearchEngine->addTag("map_Kd ", E_MTL_TAGS_t::MTL_map_Kd);
+		this->i_pTagSearchEngine->addTag("map_Ks ", E_MTL_TAGS_t::MTL_map_Ks);
+		this->i_pTagSearchEngine->addTag("map_Ke ", E_MTL_TAGS_t::MTL_map_Ke);
+		this->i_pTagSearchEngine->addTag("map_Ns ", E_MTL_TAGS_t::MTL_map_Ns);
+		this->i_pTagSearchEngine->addTag("map_Bump ", E_MTL_TAGS_t::MTL_map_Bump);
 	}
 
 	/// <summary>
@@ -141,6 +146,14 @@ namespace my_utils {
 			this->persistOptionalCharArray(pOutputStream, pElement->getMapNsFileName());
 			//map_d
 			this->persistOptionalCharArray(pOutputStream, pElement->getMapDFileName());
+			//special case_ map_Bump (because of bm float parameter)
+			this->persistOptionalCharArray(pOutputStream, pElement->getMapBumpFileName());
+			if (pElement->getMapBumpFileName() != NULL)
+			{
+				floatVal = pElement->getBumpBM();
+				pOutputStream->write((char*)&floatVal, sizeof(float));
+			}
+
 		}
 		
 	}
@@ -258,6 +271,18 @@ namespace my_utils {
 		case E_MTL_TAGS_t::MTL_map_Ke:
 		{
 			isSuccess = this->i_pCurrentMaterial->parseMapKe(pLine, 7);
+		} break;
+		case E_MTL_TAGS_t::MTL_map_Ns:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseMapNs(pLine, 7);
+		} break;
+		case E_MTL_TAGS_t::MTL_map_d:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseMapD(pLine, 7);
+		} break;
+		case E_MTL_TAGS_t::MTL_map_Bump:
+		{
+			isSuccess = this->i_pCurrentMaterial->parseMapBump(pLine, 9);
 		} break;
 		default:
 			std::cout << "unsuported MTL Tag detected: " << (int)lineTag << "\n";

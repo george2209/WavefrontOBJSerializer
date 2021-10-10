@@ -55,73 +55,10 @@ namespace my_utils {
 		MTL_map_Kd,
 		MTL_map_Ka,
 		MTL_map_Ks,
-		MTL_map_Ke
-	};
+		MTL_map_Ke,
+		MTL_map_Ns,
+		MTL_map_d,
+		MTL_map_Bump
 
-//	using namespace std;
-//	ostream& operator<<(ostream& os, const E_MTL_TAGS_t& tag)
-//	{
-//		switch (tag)
-//		{
-//		case E_MTL_TAGS_t::OBJ_INVALID_TAG:
-//		{
-//			os << "OBJ_INVALID_TAG";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_COMMENT:
-//		{
-//			os << "MTL_COMMENT";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_newmtl:
-//		{
-//			os << "MTL_newmtl";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_Ka:
-//		{
-//			os << "MTL_Ka";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_Kd:
-//		{
-//			os << "MTL_Kd";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_Ks:
-//		{
-//			os << "MTL_Ks";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_Ke:
-//		{
-//			os << "MTL_Ke";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_Ns:
-//		{
-//			os << "MTL_Ns";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_Ni:
-//		{
-//			os << "MTL_Ni";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_d:
-//		{
-//			os << "MTL_d";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_illum:
-//		{
-//			os << "MTL_illum";
-//		} break;
-//		case E_MTL_TAGS_t::MTL_map_Kd:
-//		{
-//			os << "MTL_map_Kd";
-//		} break;		
-//		default:
-//		{
-//			os << "ERROR! UNKNOWN TAG!" << (int)tag << "\n";
-//#ifdef _DEBUG
-//			assert(false);
-//#else
-//			break;
-//#endif
-//		}
-//		}
-//		
-//		return os;
-//	}
+	};
 }

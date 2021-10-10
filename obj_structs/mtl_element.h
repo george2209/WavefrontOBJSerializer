@@ -23,6 +23,7 @@ namespace my_utils
 		bool parseMapKe(const char* pLine, int startingIndex);
 		bool parseMapNs(const char* pLine, int startingIndex);
 		bool parseMapD(const char* pLine, int startingIndex);
+		bool parseMapBump(const char* pLine, int startingIndex);
 	
 	public:
 		inline const char* getMaterialName()
@@ -37,6 +38,7 @@ namespace my_utils
 		inline float getNI() { return NI; };
 		inline float getD() { return d; };
 		inline char getIllum() { return illum; };
+		inline float getBumpBM() { return this->i_map_bump_bm; }
 		inline short getID() { return this->i_ID; };
 		inline const char* getMapKdFileName() { return this->i_arrMapKdFile; };
 		inline const char* getMapKaFileName() { return this->i_arrMapKaFile; };
@@ -44,6 +46,7 @@ namespace my_utils
 		inline const char* getMapKeFileName() { return this->i_arrMapKeFile; };
 		inline const char* getMapNsFileName() { return this->i_arrMapNsFile; };
 		inline const char* getMapDFileName() { return this->i_arrMapDFile; };
+		inline const char* getMapBumpFileName() { return this->i_arrMapBumpFile; };
 
 	private:
 		bool parseVertexElement(obj_vertex_element *& pElement, const char* pLine, int startingIndex);
@@ -103,6 +106,11 @@ namespace my_utils
 		char* i_arrMapDFile; // Specifies that a scalar texture file or scalar procedural texture file 
 							 //is linked to the dissolve of the material.During rendering, the map_d
 							 //value is multiplied by the d value.
+
+		char* i_arrMapBumpFile; // Specifies that a bump texture file is linked to the material. To be see how this is working against the normal.
+								// Supported parameters : only bm = float[0.0…1.0]
+		float i_map_bump_bm;
+
 
 		//map_aat not implemented.
 		
