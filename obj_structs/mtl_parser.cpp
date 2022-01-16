@@ -7,7 +7,7 @@
 #include "../linkedlist.h"
 #include "obj_structs.h"
 #include "obj_vertex_element.h"
-#include <unordered_map>
+//#include <unordered_map>
 
 #ifdef _DEBUG
 #include <direct.h> // _getcwd

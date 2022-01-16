@@ -299,8 +299,14 @@ namespace my_utils
 				success = false;
 			}
 
-			return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapBumpFile);
+			if (success)
+				return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapBumpFile);
+			else
+				return success;
 
+		}
+		else {
+			return this->parseMapTagIntoArray(pLine, startingIndex, &i_arrMapBumpFile);
 		}
 		
 

@@ -11,13 +11,13 @@ namespace my_utils {
 	class mtl_element;
 	class obj_vertex_element;
 
-	template<
+	/*template<
 		class Key,
 		class T,
 		class Hash = std::hash<Key>,
 		class KeyEqual = std::equal_to<Key>,
 		class Allocator = std::allocator< std::pair<const Key, T> >
-	> class std::unordered_map;
+	> class std::unordered_map;*/
 
 	struct mtl_hash_algoritm
 	{

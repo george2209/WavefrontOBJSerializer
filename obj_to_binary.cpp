@@ -67,6 +67,10 @@ void printHelpMessage()
 
 bool processCommandParams(int argc, char* argv[], my_utils::E_PARSER_OPTIONS& parserOptions)
 {
+	if(argc <= 1)
+		printHelpMessage();
+	else
+
 	for (int i = 0; i < argc; i++)
 	{
 		if (i == 0)
