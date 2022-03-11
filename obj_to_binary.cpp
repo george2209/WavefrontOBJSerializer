@@ -89,14 +89,15 @@ bool processCommandParams(int argc, char* argv[], my_utils::E_PARSER_OPTIONS& pa
 			{
 				//the last character must be '\'. if not then add it at the end of OBJ_CLASS_PATH
 				bool isLastCharOK = (pTmp[size - 1]) == '\\';
-				size += (!isLastCharOK);
+				size += (!isLastCharOK) - 4; //4 => "-cp="
 				if (parserOptions.OBJ_CLASS_PATH != NULL)
 					DELETE_ARR(parserOptions.OBJ_CLASS_PATH);
 
 				parserOptions.OBJ_CLASS_PATH = new char[size + 1];
 				(parserOptions.OBJ_CLASS_PATH)[size-1] = isLastCharOK? NULL : '\\';
 				(parserOptions.OBJ_CLASS_PATH)[size] = NULL;
-				COPY_CHAR_ARRAYS(pTmp, 4, (parserOptions.OBJ_CLASS_PATH), 0, size - !isLastCharOK);
+				int sizeTmp = size - (!isLastCharOK);
+				COPY_CHAR_ARRAYS(pTmp, 4, (parserOptions.OBJ_CLASS_PATH), 0, sizeTmp);
 			}
 			else if ((strncmp("-h", argv[i], 2) == 0) || 
 				(strncmp("--help", argv[i], 6) == 0)) {
